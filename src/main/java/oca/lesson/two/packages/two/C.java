@@ -1,7 +1,6 @@
 package oca.lesson.two.packages.two;
 
 import oca.lesson.two.packages.one.A;
-import oca.lesson.two.packages.one.B;
 
 /**
  * Classes that are in the same package like A and B on package "one", do not have the need of be
@@ -18,6 +17,6 @@ public class C {
 
     public static void main(String[] args) {
         A a = new A();
-        B b = new B();
+        oca.lesson.two.packages.one.B b = new oca.lesson.two.packages.one.B();
     }
 }
