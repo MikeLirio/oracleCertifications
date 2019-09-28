@@ -3,6 +3,7 @@ package oca.user.gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
@@ -30,6 +31,7 @@ public class AppWithBehaviors {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("I'm been clicked !!!");
+                appArea.append("\nThe button was clicked on " + new Date());
             }
         }
 
