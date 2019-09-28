@@ -27,15 +27,22 @@ public class AppWithBehaviors {
 
         this.appButton = new JButton("Click me");
 
-        class ButtonHandler implements ActionListener {
+//        class ButtonHandler implements ActionListener {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.out.println("I'm been clicked !!!");
+//                appArea.append("\nThe button was clicked on " + new Date());
+//            }
+//        }
+//
+//        this.appButton.addActionListener(new ButtonHandler());
+        this.appButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("I'm been clicked !!!");
                 appArea.append("\nThe button was clicked on " + new Date());
             }
-        }
-
-        this.appButton.addActionListener(new ButtonHandler());
+        });
 
         this.appArea = new JTextArea("Write a comment");
 
