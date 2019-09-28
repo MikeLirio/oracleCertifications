@@ -7,12 +7,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
-class ButtonHandler implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("WIP");
-    }
-}
+//class ButtonHandler implements ActionListener {
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        throw new UnsupportedOperationException("WIP");
+//    }
+//}
 
 public class AppWithBehaviors {
 
@@ -25,6 +25,14 @@ public class AppWithBehaviors {
         this.appFrame.setLayout(new GridLayout(2, 1));
 
         this.appButton = new JButton("Click me");
+
+        class ButtonHandler implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("I'm been clicked !!!");
+            }
+        }
+
         this.appButton.addActionListener(new ButtonHandler());
 
         this.appArea = new JTextArea("Write a comment");
