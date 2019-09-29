@@ -19,6 +19,7 @@ public class AppWithBehaviors {
 
     private JFrame appFrame;
     private JButton appButton;
+    private JButton threadButton;
     private JTextArea appArea;
 
     public void launch() {
@@ -44,14 +45,35 @@ public class AppWithBehaviors {
             }
         });
 
+        this.threadButton = new JButton("Say your name, THREAD !");
+        this.threadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                appArea.append("\nMy name is " + Thread.currentThread().getName());
+            }
+        });
+
         this.appArea = new JTextArea("Write a comment");
 
         this.appFrame.add(this.appButton);
+        this.appFrame.add(this.threadButton);
         this.appFrame.add(this.appArea);
 
         this.appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.appFrame.setBounds(10, 10, 400, 200);
         this.appFrame.setVisible(true);
+
+        System.out.println("\nThe main thread name is " + Thread.currentThread().getName());
+
+        for (;;) {
+            try {
+                Thread.sleep(2000);
+                this.appArea.append("\nTickle at " + new Date());
+            } catch (InterruptedException e) {
+                System.err.print("Something happens here !!");
+            }
+        }
+
     }
 
     public static void main(String [] args) {
