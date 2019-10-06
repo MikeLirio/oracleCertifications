@@ -115,14 +115,14 @@ public class ChatUI {
         }
     }
 
-    public void readMessage(final String newMessage) {
+    public void readMessageFromKeyboard(final String newMessage) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-//                String messageToPrint = USERS_LINE
-//                    .replace(USER_NAME, USER_UNKNOW)
-//                    .replace(MESSAGE, newMessage);
-                chatText.append(newMessage);
+                String messageToPrint = USERS_LINE
+                    .replace(USER_NAME, USER_UNKNOW)
+                    .replace(MESSAGE, newMessage);
+                chatText.append(messageToPrint);
             }
         });
     }
