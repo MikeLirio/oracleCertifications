@@ -12,13 +12,14 @@ import static oca.chat.constants.UIConstants.SYSTEM_LINE;
 import static oca.chat.constants.UIConstants.USERS_LINE;
 import static oca.chat.constants.UIConstants.USER_ME;
 import static oca.chat.constants.UIConstants.USER_NAME;
+import static oca.chat.constants.UIConstants.USER_UNKNOW;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -36,27 +37,28 @@ public class ChatUI {
     private String userName;
 
     public ChatUI() {
-        this("", "");
+        this("");
     }
 
-    public ChatUI(final String title, final String user) {
-        this(title, user, null);
+    public ChatUI(final String user) {
+        this(user, null);
     }
 
-    public ChatUI(final String title, final String user, final Writer output) {
+    public ChatUI(final String user, final Writer output) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                initialize(title == null ? "" : title, user, null);
+                initialize(user == null ? "" : user, output);
             }
         });
     }
 
-    private void initialize(final String title, final String user, final Writer output) {
+    private void initialize(final String user, final Writer output) {
         this.output = output;
         this.userName = user;
         this.frame = new JFrame(
-            title.isEmpty() ? DEFAULT_LAYOUT_WITHOUT_TITLE : DEFAULT_LAYOUT_WITH_TITLE + title
+            this.userName.isEmpty() ? DEFAULT_LAYOUT_WITHOUT_TITLE
+                : DEFAULT_LAYOUT_WITH_TITLE + this.userName
         );
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -111,5 +113,17 @@ public class ChatUI {
                 this.writeSystemInfo(INFO_NO_WRITER);
             }
         }
+    }
+
+    public void readMessage(final String newMessage) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+//                String messageToPrint = USERS_LINE
+//                    .replace(USER_NAME, USER_UNKNOW)
+//                    .replace(MESSAGE, newMessage);
+                chatText.append(newMessage);
+            }
+        });
     }
 }

@@ -6,6 +6,7 @@ public class UIConstants {
 
     public static final String CLEAR_TEXT = "";
     public static final String USER_ME = "Me";
+    public static final String USER_UNKNOW = "Unknow";
     public static final String MESSAGE = "${message}";
     public static final String USER_NAME = "${userName}";
     public static final String ERROR_MESSAGE = "${error_message}";
@@ -13,7 +14,7 @@ public class UIConstants {
     public static final String INFO_NO_WRITER = "Sorry ! You are not connected to the network";
 
     public static final String ERROR_SENDING_MESSAGE =
-        "Sorry! the \"" + MESSAGE + "\" could not be sent";
+        "Sorry! the \"" + MESSAGE + "\" could not be sent!";
 
     public static final String USERS_LINE = USER_NAME + ":\n" + MESSAGE + "\n";
     public static final String SYSTEM_ERROR_LINE = "SYSTEM ERROR:\n<< " + ERROR_MESSAGE + " >>\n";
