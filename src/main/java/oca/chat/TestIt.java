@@ -22,7 +22,7 @@ public class TestIt  {
         String line;
         while((line = keyboard.readLine()) != null) {
             for (ChatUI chat : openChats) {
-                chat.readMessageFromKeyboard(line);
+                chat.readMessage(line);
             }
         }
     }

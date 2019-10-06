@@ -16,7 +16,10 @@ public class UIConstants {
     public static final String ERROR_SENDING_MESSAGE =
         "Sorry! the \"" + MESSAGE + "\" could not be sent!";
 
-    public static final String USERS_LINE = USER_NAME + ":\n" + MESSAGE + "\n";
-    public static final String SYSTEM_ERROR_LINE = "SYSTEM ERROR:\n<< " + ERROR_MESSAGE + " >>\n";
-    public static final String SYSTEM_LINE = "SYSTEM:\n<< " + MESSAGE + " >>\n";
+    public static final String USERS_LINE = USER_NAME + ":" + MESSAGE + "\n";
+    public static final String SYSTEM_ERROR_LINE = "SYSTEM ERROR:<< " + ERROR_MESSAGE + " >>\n";
+    public static final String SYSTEM_LINE = "SYSTEM:<< " + MESSAGE + " >>\n";
+
+    public static final String LOCALHOST = "127.0.0.1";
+    public static final Integer PORT = 8080;
 }
