@@ -3,11 +3,19 @@ package oca.chat;
 import static oca.chat.constants.UIConstants.CLEAR_TEXT;
 import static oca.chat.constants.UIConstants.DEFAULT_LAYOUT_WITHOUT_TITLE;
 import static oca.chat.constants.UIConstants.DEFAULT_LAYOUT_WITH_TITLE;
-import static oca.chat.constants.UIConstants.NEW_LINE;
+import static oca.chat.constants.UIConstants.ERROR_MESSAGE;
+import static oca.chat.constants.UIConstants.ERROR_SENDING_MESSAGE;
+import static oca.chat.constants.UIConstants.INFO_NO_WRITER;
+import static oca.chat.constants.UIConstants.ME;
+import static oca.chat.constants.UIConstants.MESSAGE;
+import static oca.chat.constants.UIConstants.SYSTEM_ERROR_LINE;
+import static oca.chat.constants.UIConstants.SYSTEM_LINE;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.Writer;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -21,20 +29,27 @@ public class ChatUI {
     private JTextArea chatText;
     private JTextField entryText;
 
+    private Writer output;
+
     public ChatUI() {
         this("");
     }
 
     public ChatUI(final String title) {
+        this(title, null);
+    }
+
+    public ChatUI(final String title, final Writer output) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                initialize(title == null ? "" : title);
+                initialize(title == null ? "" : title, null);
             }
         });
     }
 
-    private void initialize(String title) {
+    private void initialize(final String title, final Writer output) {
+        this.output = output;
         this.frame = new JFrame(
             title.isEmpty() ? DEFAULT_LAYOUT_WITHOUT_TITLE : DEFAULT_LAYOUT_WITH_TITLE + title
         );
@@ -52,11 +67,32 @@ public class ChatUI {
             public void actionPerformed(ActionEvent e) {
                 String newMessage = entryText.getText();
                 entryText.setText(CLEAR_TEXT);
-                chatText.append(NEW_LINE + newMessage);
+                chatText.append(ME.replace(MESSAGE, newMessage));
+
+                try {
+                    output.write(ME.replace(MESSAGE, newMessage));
+                    output.flush();
+                } catch (IOException e1) {
+                    writeSystemError(ERROR_SENDING_MESSAGE.replace(MESSAGE, newMessage));
+                } catch (NullPointerException e2) {
+                    writeSystemInfo(INFO_NO_WRITER);
+                }
             }
         });
 
         this.frame.setBounds(30, 30, 300, 300);
         this.frame.setVisible(true);
+    }
+
+    private void writeSystemError(String error) {
+        this.chatText.append(
+            SYSTEM_ERROR_LINE.replace(ERROR_MESSAGE, error)
+        );
+    }
+
+    private void writeSystemInfo(String info) {
+        chatText.append(
+            SYSTEM_LINE.replace(MESSAGE, info)
+        );
     }
 }
