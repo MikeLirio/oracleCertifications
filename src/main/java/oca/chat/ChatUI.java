@@ -6,12 +6,15 @@ import static oca.chat.constants.UIConstants.DEFAULT_LAYOUT_WITH_TITLE;
 import static oca.chat.constants.UIConstants.ERROR_MESSAGE;
 import static oca.chat.constants.UIConstants.ERROR_SENDING_MESSAGE;
 import static oca.chat.constants.UIConstants.INFO_NO_WRITER;
-import static oca.chat.constants.UIConstants.ME;
 import static oca.chat.constants.UIConstants.MESSAGE;
 import static oca.chat.constants.UIConstants.SYSTEM_ERROR_LINE;
 import static oca.chat.constants.UIConstants.SYSTEM_LINE;
+import static oca.chat.constants.UIConstants.USERS_LINE;
+import static oca.chat.constants.UIConstants.USER_ME;
+import static oca.chat.constants.UIConstants.USER_NAME;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -30,26 +33,28 @@ public class ChatUI {
     private JTextField entryText;
 
     private Writer output;
+    private String userName;
 
     public ChatUI() {
-        this("");
+        this("", "");
     }
 
-    public ChatUI(final String title) {
-        this(title, null);
+    public ChatUI(final String title, final String user) {
+        this(title, user, null);
     }
 
-    public ChatUI(final String title, final Writer output) {
+    public ChatUI(final String title, final String user, final Writer output) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                initialize(title == null ? "" : title, null);
+                initialize(title == null ? "" : title, user, null);
             }
         });
     }
 
-    private void initialize(final String title, final Writer output) {
+    private void initialize(final String title, final String user, final Writer output) {
         this.output = output;
+        this.userName = user;
         this.frame = new JFrame(
             title.isEmpty() ? DEFAULT_LAYOUT_WITHOUT_TITLE : DEFAULT_LAYOUT_WITH_TITLE + title
         );
@@ -67,16 +72,7 @@ public class ChatUI {
             public void actionPerformed(ActionEvent e) {
                 String newMessage = entryText.getText();
                 entryText.setText(CLEAR_TEXT);
-                chatText.append(ME.replace(MESSAGE, newMessage));
-
-                try {
-                    output.write(ME.replace(MESSAGE, newMessage));
-                    output.flush();
-                } catch (IOException e1) {
-                    writeSystemError(ERROR_SENDING_MESSAGE.replace(MESSAGE, newMessage));
-                } catch (NullPointerException e2) {
-                    writeSystemInfo(INFO_NO_WRITER);
-                }
+                writeMeMessage(newMessage);
             }
         });
 
@@ -85,14 +81,35 @@ public class ChatUI {
     }
 
     private void writeSystemError(String error) {
+//        Font errorFont = new Font(Font.SANS_SERIF, Font.ITALIC, 9);
+//        this.chatText.setFont(errorFont);
         this.chatText.append(
             SYSTEM_ERROR_LINE.replace(ERROR_MESSAGE, error)
         );
     }
 
     private void writeSystemInfo(String info) {
-        chatText.append(
+//        Font infoFont = new Font(Font.SERIF, Font.BOLD, 9);
+//        this.chatText.setFont(infoFont);
+       this.chatText.append(
             SYSTEM_LINE.replace(MESSAGE, info)
         );
+    }
+
+    private void writeMeMessage(String message) {
+        String messageToPrint = USERS_LINE
+            .replace(USER_NAME, this.userName.isEmpty() ? USER_ME : this.userName)
+            .replace(MESSAGE, message);
+        this.chatText.append(messageToPrint);
+        if (this.output != null) {
+            try {
+                this.output.write(messageToPrint);
+                this.output.flush();
+            } catch (IOException e1) {
+                this.writeSystemError(ERROR_SENDING_MESSAGE.replace(MESSAGE, messageToPrint));
+            } catch (NullPointerException e2) {
+                this.writeSystemInfo(INFO_NO_WRITER);
+            }
+        }
     }
 }
